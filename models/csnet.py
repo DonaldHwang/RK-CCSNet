@@ -34,13 +34,15 @@ class CSNet(nn.Module):
         self.res3 = ResBlock(self.base, 3)
         self.res4 = ResBlock(self.base, 3)
         self.res5 = ResBlock(self.base, 3)
+        self.res6 = ResBlock(self.base, 3)
+        self.res7 = ResBlock(self.base, 3)
+        self.res8 = ResBlock(self.base, 3)
         self.conv2 = nn.Conv2d(self.base, 1, kernel_size=3, padding=1, stride=1, bias=False)
 
         self.relu = nn.ReLU(inplace=True)
 
     def forward(self, x):
         x = self.sample(x)
-        #         print(x.shape)
         x = self.initial(x)
         initial = nn.PixelShuffle(32)(x)
         out = self.relu(self.conv1(initial))
@@ -48,5 +50,9 @@ class CSNet(nn.Module):
         out = self.res2(out)
         out = self.res3(out)
         out = self.res4(out)
+        out = self.res5(out)
+        out = self.res6(out)
+        out = self.res7(out)
+        out = self.res8(out)
         out = self.conv2(out)
         return out + initial, initial
